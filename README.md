@@ -13,7 +13,7 @@
 ![demo](https://user-images.githubusercontent.com/47502256/152688564-f7f955f1-d63b-4006-8be3-3c9475e7bd4c.gif)
 
 ## [tRexRunner](/tRexRunner)
-![preview](https://user-images.githubusercontent.com/47502256/152688514-aa4d4088-adbb-4787-827b-9113265ab709.png)
+![preview](https://user-images.githubusercontent.com/47502256/152689422-a6af8d79-f4a6-44f7-a826-cbd7388b091e.png)
 ![dino](https://user-images.githubusercontent.com/47502256/152688575-2e81d7ba-682d-4320-9ab6-1bf9ae3843c9.gif)
 
 ## [2048](/2048game)
