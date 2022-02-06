@@ -1,6 +1,3 @@
-# game2048
+# ai bot games in js
 
-<script>
-
-console.log('hello');
-</script>
+2022, Python, JS
