@@ -1,103 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html>
   <head>
-    <meta charset="utf-8">
-    <title>2048</title>
-    <link rel="stylesheet" href="assets/style.css">
-	<link rel="stylesheet" href='assets/style_core.css'>
-	<script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
-    <script src="js/game.js" charset="utf-8"></script>
+    <title>AI bot games in JS</title>
   </head>
   <body>
-
-    <div class="container">
-      <div class="info">
-        <h1>2048</h1>
-		<h4 id='genetic'>Generation: <a>0</a> Ptr: <a>0</a> Run: <a>0</a></h4>
-        <div class="score-container">
-          <div class="score-title">score</div>
-          <span id="score">0</span>
-        </div>
-      </div>
-      <span id="result">Join the numbers and get to the <b>2048</b> tile!</span>
-      <div class="grid"></div>
-	  <div class="settings">
-		<div>
-		<h3>NN config</h3>
-		<label for='n1Size'>Hidden size:</label>
-		<input type="range" min="2" max="192" value="4" step="2" id='n1Size'>
-		<output></output><br/>
-		<label for='bias'>Bias:</label>
-		<input type="checkbox" checked id='bias'>
-		<hr/>
-		</div>
-		<div>
-		<h3>Population config</h3>
-		<label for='size'>Population size:</label>
-		<input type="range" min="10" max="200" value="50" step="5" id='size'>
-		<output></output><br/>
-		<label for='runs'>Runs per one:</label>
-		<input type="range" min="1" max="10" value="1" step="1" id='runs'>
-		<output></output><br/>
-		<label for='selectionTopPercent'>Selection rate:</label>
-		<input type="range" min="5" max="75" value="25" step="1" id='selectionTopPercent'>
-		<output></output><br/>
-		<label for='mutationRate'>Mutation Rate:</label>
-		<input type="range" min="0.01" max="0.5" value="0.1" step="0.01" id='mutationRate'>
-		<output></output><br/>
-		<label for='crossoverChance'>Crossover Chance:</label>
-		<input type="range" min="0.1" max="0.9" value="0.6" step="0.05" id='crossoverChance'>
-		<output></output><br/>
-		<label for='randomSize'>Random Count:</label>
-		<input type="range" min="1" max="5" value="3" step="1" id='randomSize'>
-		<output></output><br/>
-		<label for='probability'>Action randomness:</label>
-		<input type="range" min="0.05" max="0.95" value="0.5" step="0.01" id='probability'>
-		<output></output><br/>
-		<hr/>
-		</div>
-		<div>
-		<h3>Save config</h3>
-		<label for='savingPrecision'>Precision:</label>
-		<input type="range" min="1" max="10" value="3" step="1" id='savingPrecision'>
-		<output>3</output><br/>
-		<hr/>
-		</div>
-		<button class='saveSettings'>Save changes</button>
-		<button class='closeSettings'>Close</button>
-	  </div>
-	  <div>
-		<h1 class="datasetSize">0</h1>
-		<div class="delete">
-		  <img src="assets/delete.svg" width="50px" />
-		</div>
-		<div class="download">
-		  <img src="assets/download.svg" width="50px"><a download="2048_dataset.csv" href='none'></a></img>
-		</div>
-		<div class="settingsBtn">
-		  <img src="assets/settings.svg" width="50px"></img>
-		</div>
-		<div class="population">
-		  <img src="assets/download.svg" width="50px"><a download="population.json" href='none'></a></img>
-		</div>
-		<div class="autobot">
-		  <img src="assets/autobot_off.svg" width="50px" />
-		  <img src="assets/autobot_on.svg" width="50px" hidden/>
-		</div>
-		<p class='upload'>
-		  <label for="file_input">
-			<img src="assets/upload1.svg" width="50px"></img>
-			<img src="assets/upload2.svg" width="50px" hidden></img>
-			Checkpoint
-		  </label>
-		  <input type="file" id='file_input' class="modelFile" accept=".json" multiple/>
-		</p>
-		</div>
+    <div>
+    Ping Pong: <a href='./pingpong/index.html'>CHECK</a>
     </div>
-  <script src="js/nn.js" charset="utf-8"></script>
-  <script src="js/ai_h.js" charset="utf-8"></script>
-  <script src="js/baseline.js" charset="utf-8"></script>
-  <script src="js/ai.js" charset="utf-8"></script>
-  <script src="js/core.js" charset="utf-8"></script>
+    <div>
+    tRex Runner: <a href='./tRexRunner/index.html'>CHECK</a>
+    </div>
+    <div>
+    2048: <a href='./game2048/index.html'>CHECK</a>
+    </div>  
   </body>
 </html>

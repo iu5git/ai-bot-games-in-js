@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ping-Pong JavaScript</title>
+    <!-- Задаём стили для всего документа -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>-->
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        background: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .download {
+        position: fixed;
+        cursor: pointer;
+        left: 250px;
+        top: 50px;
+      }
+      .delete {
+        position: fixed;
+        cursor: pointer;
+        left: 325px;
+        top: 50px;
+      }
+      .logging {
+        color: white;
+        position: fixed;
+        left: 100px;
+        top: 50px;
+      }
+      .datasetSize {
+        color: white;
+        position: fixed;
+        left: 400px;
+        top: 35px;
+      }
+      .score {
+        color: white;
+        position: fixed;
+        left: 100px;
+        bottom: 35px;
+      }
+      .upload {
+        color: white;
+        position: fixed;
+        right: 100px;
+        top: 35px;
+      }
+      .upload input {
+        display: none;
+      }
+      .upload label:hover{
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Рисуем игровое поле -->
+    <canvas width="750" height="585" id="game"></canvas>
+    <h5 class="logging"></h5>
+    <h1 class="datasetSize">0</h1>
+    <div class="download">
+      <img src="assets/download.svg" width="50px"><a download="ping_pong_dataset.csv" href='none'></a></img>
+    </div>
+    <div class="delete">
+      <img src="assets/delete.svg" width="50px" />
+    </div>
+    <p class='upload'>
+      <label for="file_input">
+        <img src="assets/upload1.svg" width="50px"></img>
+        <img src="assets/upload2.svg" width="50px" hidden></img>
+        ONNX file
+      </label>
+      <input type="file" id='file_input' class="modelFile" accept=".onnx"/>
+    </p>
+    <h1 class="score">
+    Current: <a>0</a><br/>
+    Best score: <a>0</a><br/>
+    Average: <a>0</a>
+    </h1>
+    <script src="js/pingpong.js"></script>
+	<script src="js/onnx.min.js"></script>
+  </body>
+</html>
