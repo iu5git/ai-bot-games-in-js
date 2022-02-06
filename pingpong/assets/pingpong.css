@@ -1,0 +1,43 @@
+#game {
+  background: #daeff5;
+  width: 600px;
+  height: 300px;
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 5px;
+  border: 2px solid #ffffff;
+}
+#ball {
+  background: #d9ed7a;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 290px;
+  top: 140px;
+  border-radius: 10px;
+  border: 1px solid #000000;
+}
+.paddle {
+  background: #d5d3d3;
+  position: absolute;
+  left: 50px;
+  top: 115px;
+  width: 15px;
+  height: 70px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+}
+#paddleB {
+  left: 535px;
+}
+
+.download img:hover {
+  cursor: pointer;
+  z-index: 1;
+}
+
+.delete img:hover {
+  cursor: pointer;
+  z-index: 1;
+}
