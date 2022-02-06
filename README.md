@@ -7,6 +7,7 @@
 * [tRexRunner](#trexrunner)
 * [2048](#2048)
 
+You can check resources here: https://defasium.github.io/ai-bot-games-in-js
 
 ## [PingPong](/pingpong)
 ![preview](https://user-images.githubusercontent.com/47502256/152688525-e315edab-37d4-453a-b458-fc498acada02.png)
