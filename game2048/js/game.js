@@ -16,14 +16,20 @@ const scoreReset = {
     }
 };
 
+let clear;
+let control;
+let score = 0;
+let done = false;
+let busy = false;
+
 document.addEventListener('DOMContentLoaded', () => {
     const gridDisplay = document.getElementsByClassName('grid')[0];
     const scoreDisplay = document.getElementById('score');
     const resultDisplay = document.getElementById('result');
     const squares = [];
     const width = 4;
-    let score = 0;
     let turn = 1;
+	let time = Date.now();
 
     const moveRight = () => {
         for (let i = 0; i < 16; i++) {
@@ -226,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
         //generate();
     }
 
-    let busy = false;
     const keyCodeToControlMap = {
         37: keyLeft,
         38: keyUp,
@@ -235,12 +240,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     //assign functions to keyCodes
-    const control = (e) => {
+    control = (e) => {
         if (busy) return; //prevent bugs
         if (e.keyCode < 37 || e.keyCode > 40) return; // filter keycodes;
         busy = true;
         // update policy
         const inputs = squares.map((el) => parseInt(el.textContent));
+		const scoreBefore = score;
+		const maxBefore = Math.max(...inputs);
         inputs.push(score, turn, e.keyCode);
         // apply changes
         keyCodeToControlMap[e.keyCode]();
@@ -252,11 +259,14 @@ document.addEventListener('DOMContentLoaded', () => {
 				policyWithAction.a = inputs;
 				turn++;
 				score += 2*(squares.length - squares.map(e=>parseInt(e.textContent)).filter(e=>e).length); //add number of zero cells
-				busy = false;
-				return;
+				break;
 			}
 		}
 		busy = false;
+		const maxNew = Math.max(...inputs);
+        //const scoreMean = inputs.reduce((r, e)=>r+e, 0)/inputs.length;
+		//console.log(scoreMean);
+		return (maxNew - maxBefore) / 2048 + turn / 2048 - 1;
     }
     document.addEventListener('keyup', control);
 
@@ -264,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkForWin = () => {
         for (let i = 0; i < squares.length; i++) {
             if (squares[i].innerHTML == 2048) {
+				done = true;
                 resultDisplay.textContent = 'You WIN';
                 document.removeEventListener('keyup', control);
                 setTimeout(() => clear(), 3000);
@@ -281,6 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (zeros === 0) {
 			// check if moves exists
 			if (checkConnectivity()) return;
+			done = true;
             resultDisplay.textContent = 'You LOSE';
             document.removeEventListener('keyup', control);
             setTimeout(() => clear(), 1000);
@@ -288,17 +300,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //clear timer
-    const clear = () => {
+    //const clear = () => {
+	clear = () => {
         console.log('here');
+		done = false;
 		const maxObtained = Math.max(...squares.map(e=> parseInt(e.textContent)));
 		squares.length = 0;
         gridDisplay.textContent = '';
 		// NEW
 		// max block + average score per games + turns
 		// squared so mean will be shifted to better games
-		scoreReset.a = (10*maxObtained**2 + Math.floor(score/turn) + turn)**2; 
+		scoreReset.a = (10*maxObtained**3 + Math.floor(score/turn) + turn)**0.5 - (Date.now() - time)/100; 
         score = 0;
         turn = 1;
+		time = Date.now();
         scoreDisplay.textContent = score;
         createBoard();
         addColours();

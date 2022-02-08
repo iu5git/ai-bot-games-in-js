@@ -211,7 +211,7 @@ const saveNewConfig = (config, updateStrictly=true) => {
     };
 	localStorage.setItem("config", JSON.stringify(POPULATION_CONFIG));
     if (recreateNew && updateStrictly) {
-        population = generatePopulation(POPULATION_CONFIG.size, 16, POPULATION_CONFIG.n1Size, 4, POPULATION_CONFIG.bias);
+        population = generatePopulation(POPULATION_CONFIG.size, 176, POPULATION_CONFIG.n1Size, 4, POPULATION_CONFIG.bias);
         curRun = 0;
         ptr = 0;
         generation = 0;
@@ -219,7 +219,7 @@ const saveNewConfig = (config, updateStrictly=true) => {
     };
 }
 
-let population = generatePopulation(POPULATION_CONFIG.size, 16, POPULATION_CONFIG.n1Size, 4, POPULATION_CONFIG.bias);
+let population = generatePopulation(POPULATION_CONFIG.size, 176, POPULATION_CONFIG.n1Size, 4, POPULATION_CONFIG.bias);
 let generation = 0;
 let ptr = 0;
 let curRun = 0;
@@ -237,7 +237,12 @@ const STATS = {naive: 0, real: 0, total: 0};
     await (new Promise(r => {
         scoreReset.registerListener(r);
     })).then((score) => {
-        population[ptr][1] += Math.floor(score*(0.25+STATS.real/STATS.total));
+		const cur_score = Math.floor(score*(0.25+STATS.real/STATS.total));
+		if (population[ptr][2]>POPULATION_CONFIG.runs) {
+			population[ptr][1] += 0.7*population[ptr][1]/population[ptr][2]+0.3*cur_score;
+		} else {
+			population[ptr][1] += cur_score;
+		}
         STATS.naive = 0;
         STATS.real = 0;
         STATS.total = 0;
@@ -271,6 +276,10 @@ getAction = async (vars) => {
     }
     lastVars = vars;
 	STATS.total += 1;
+	if (counter > lastVars.length * 30) {
+        STATS.naive += 1;
+		return [37, 38, 39, 40][Math.floor(Math.random() * 4)];
+	}
     if (counter > lastVars.length * 10) {
         STATS.naive += 1;
         if (!population[ptr][0].bias) return [37, 38, 39, 40][Math.floor(Math.random() * 4)];
