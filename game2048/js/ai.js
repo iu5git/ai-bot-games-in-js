@@ -93,22 +93,22 @@ getAction = async (vars) => {
 
 
 /*getAction = async (vars) => {
-	if (Math.random() < 0.05) {
-		return [37, 38, 39, 40][Math.floor(Math.random() * 4)];
-	} // Thompson sampling
-	const X = vars;//.map((e)=>Math.log(1+e));
-	let input = new onnx.Tensor(X, "float32", [1, 16]);
-	let output = (await onnxSess.run([input])).get("output").data;
-	const cumulativeSum = (sum => value => sum += value)(0);
-	const probs = applySoftmax(output).map(cumulativeSum);
-	const value = Math.random();
-	const probsdiff = probs.map(e => e - value);
-	for (let i=0; i<4; i++) {
-		if (probsdiff[i] > 0) {
-			return [37, 38, 39, 40][i];
-		}
-	}
-	return 40;
+    if (Math.random() < 0.05) {
+        return [37, 38, 39, 40][Math.floor(Math.random() * 4)];
+    } // Thompson sampling
+    const X = vars;//.map((e)=>Math.log(1+e));
+    let input = new onnx.Tensor(X, "float32", [1, 16]);
+    let output = (await onnxSess.run([input])).get("output").data;
+    const cumulativeSum = (sum => value => sum += value)(0);
+    const probs = applySoftmax(output).map(cumulativeSum);
+    const value = Math.random();
+    const probsdiff = probs.map(e => e - value);
+    for (let i=0; i<4; i++) {
+        if (probsdiff[i] > 0) {
+            return [37, 38, 39, 40][i];
+        }
+    }
+    return 40;
 }*/
 
 getAction = async (vars, log = true, depth = 2, returnAction = true) => {
@@ -169,10 +169,10 @@ document.getElementsByClassName("modelFile")[0].onchange = async function(
             const file = fileList[i];
             const reader = new FileReader();
             reader.onloadend = async function() {
-				const populationObject = fromJson(reader.result);
+                const populationObject = fromJson(reader.result);
                 population = population.concat(populationObject.population);
-				generation = Math.max(generation, populationObject.generation);
-				saveNewConfig(populationObject.config, false);
+                generation = Math.max(generation, populationObject.generation);
+                saveNewConfig(populationObject.config, false);
                 use_bot.state = true;
                 r();
             };
@@ -198,7 +198,7 @@ const POPULATION_CONFIG = JSON.parse(localStorage.getItem('config')) || {
     crossoverChance: 0.6,
     randomSize: 3,
     savingPrecision: 3,
-	probability: 0.2,
+    probability: 0.2,
 };
 
 const saveNewConfig = (config, updateStrictly=true) => {
@@ -209,9 +209,9 @@ const saveNewConfig = (config, updateStrictly=true) => {
         }
         POPULATION_CONFIG[key] = config[key];
     };
-	localStorage.setItem("config", JSON.stringify(POPULATION_CONFIG));
+    localStorage.setItem("config", JSON.stringify(POPULATION_CONFIG));
     if (recreateNew && updateStrictly) {
-        population = generatePopulation(POPULATION_CONFIG.size, 16, POPULATION_CONFIG.n1Size, 4, POPULATION_CONFIG.bias);
+        population = generatePopulation(POPULATION_CONFIG.size, 176, POPULATION_CONFIG.n1Size, 4, POPULATION_CONFIG.bias);
         curRun = 0;
         ptr = 0;
         generation = 0;
@@ -219,7 +219,7 @@ const saveNewConfig = (config, updateStrictly=true) => {
     };
 }
 
-let population = generatePopulation(POPULATION_CONFIG.size, 16, POPULATION_CONFIG.n1Size, 4, POPULATION_CONFIG.bias);
+let population = generatePopulation(POPULATION_CONFIG.size, 176, POPULATION_CONFIG.n1Size, 4, POPULATION_CONFIG.bias);
 let generation = 0;
 let ptr = 0;
 let curRun = 0;
@@ -237,7 +237,13 @@ const STATS = {naive: 0, real: 0, total: 0};
     await (new Promise(r => {
         scoreReset.registerListener(r);
     })).then((score) => {
-        population[ptr][1] += Math.floor(score*(0.25+STATS.real/STATS.total));
+        const cur_score = Math.floor(score*(0.25+STATS.real/STATS.total));
+        if (population[ptr][2]>POPULATION_CONFIG.runs) {
+            const clipped_score = Math.max(0.95*population[ptr][1]/population[ptr][2], cur_score);
+            population[ptr][1] += clipped_score;
+        } else {
+            population[ptr][1] += cur_score;
+        }
         STATS.naive = 0;
         STATS.real = 0;
         STATS.total = 0;
@@ -267,14 +273,19 @@ getAction = async (vars) => {
         } else {
             sameBoard = false;
             counter = 0;
+            break;
         }
     }
     lastVars = vars;
-	STATS.total += 1;
+    STATS.total += 1;
+    if (counter > lastVars.length * 30) {
+        STATS.naive += 1;
+        return [37, 38, 39, 40][Math.floor(Math.random() * 4)];
+    }
     if (counter > lastVars.length * 10) {
         STATS.naive += 1;
         if (!population[ptr][0].bias) return [37, 38, 39, 40][Math.floor(Math.random() * 4)];
-		return [37, 38, 39, 40][indexOfProb(population[ptr][0].bias)];
+        return [37, 38, 39, 40][indexOfProb(population[ptr][0].bias)];
         //const cumulativeSum = (sum => value => sum += value)(0);
         //const probs = applySoftmax(population[ptr][0].bias).map(cumulativeSum);
         //const value = Math.random();
@@ -294,11 +305,11 @@ getAction = async (vars) => {
         scores = forwardNN(vars, population[ptr][0]); // get latent representation
         lastActions = scores;
     }
-	const funcMap = {
+    const funcMap = {
         false: indexOfMax,
         true: indexOfProb
     };
-	return [37, 38, 39, 40][funcMap[Math.random() < POPULATION_CONFIG.probability](scores)];
+    return [37, 38, 39, 40][funcMap[Math.random() < (POPULATION_CONFIG.probability)**(lastVars.length*3/(lastVars.length*3+counter))](scores)];
     //const cumulativeSum = (sum => value => sum += value)(0);
     //const probs = applySoftmax(scores).map(cumulativeSum);
     //const value = Math.random();
@@ -308,21 +319,21 @@ getAction = async (vars) => {
     //    }
     //}
     /*
-    	let actions = [37, 38, 39, 40];
-    	if (!sameBoard) return actions[indexOfMax(scores)];
-    	for (let i=0; i < (counter-lastVars.length*3)/vars.length; i++) {
-    		const index = indexOfMax(scores);
-    		actions.splice(index, 1);
-    		scores.splice(index, 1);
-    	}
-    	return actions[indexOfMax(scores)]; // метод исключения*/
+        let actions = [37, 38, 39, 40];
+        if (!sameBoard) return actions[indexOfMax(scores)];
+        for (let i=0; i < (counter-lastVars.length*3)/vars.length; i++) {
+            const index = indexOfMax(scores);
+            actions.splice(index, 1);
+            scores.splice(index, 1);
+        }
+        return actions[indexOfMax(scores)]; // метод исключения*/
     /*
     const value = Math.random();
     const probsdiff = probs.map(e => e - value);
     for (let i=0; i<4; i++) {
-    	if (probsdiff[i] > 0) {
-    		return [37, 38, 39, 40][i];
-    	}
+        if (probsdiff[i] > 0) {
+            return [37, 38, 39, 40][i];
+        }
     }
     return 40;*/
 
@@ -332,18 +343,18 @@ getAction = async (vars) => {
     const actionMap = [[1,0,0,0], [0,1,0,0], [0,0,1,0], [0,0,0,1]]
     const scores = [];
     if (Math.random() < 0.0) {
-    	return [37, 38, 39][Math.floor(Math.random() * 3)];
+        return [37, 38, 39][Math.floor(Math.random() * 3)];
     } // Thompson sampling
     const answer = decisionTree(X);
     //if (answer > 39) return [37, 37, 38, 38, 39][Math.floor(Math.random() * 6)];
     return answer;
     for (let i=0; i<actionMap.length; i++) {
-    	let input = X.concat(actionMap[i]);
-    	console.log(input);
-    	scores.push(decisionTree(input));
+        let input = X.concat(actionMap[i]);
+        console.log(input);
+        scores.push(decisionTree(input));
     }
     if (Math.random() < 0.05) {
-    	return [37, 38, 39, 40][Math.floor(Math.random() * 4)];
+        return [37, 38, 39, 40][Math.floor(Math.random() * 4)];
     } // Thompson sampling
     console.log(scores);
     const cumulativeSum = (sum => value => sum += value)(0);
@@ -351,9 +362,9 @@ getAction = async (vars) => {
     const value = Math.random();
     const probsdiff = probs.map(e => e - value);
     for (let i=0; i<4; i++) {
-    	if (probsdiff[i] > 0) {
-    		return [37, 38, 39, 40][i];
-    	}
+        if (probsdiff[i] > 0) {
+            return [37, 38, 39, 40][i];
+        }
     }
     return 40;
     return [37, 38, 39, 40][indexOfMax(scores)];*/

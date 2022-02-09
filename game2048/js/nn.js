@@ -57,7 +57,7 @@ const initializeWeights = (inputSize, n1Size, n2Size, bias) => {
     return weights;
 }
 
-const generatePopulation = (size = 20, inputSize = 16, n1Size = 8, n2Size = 4, bias = true) => {
+const generatePopulation = (size = 20, inputSize = 176, n1Size = 8, n2Size = 4, bias = true) => {
     const population = [];
     for (let i = 0; i < size; i++) {
         population.push([initializeWeights(inputSize, n1Size, n2Size, bias), 0, 0.1]); // weight + score + lives;
@@ -98,32 +98,46 @@ const crossParents = (parentA, parentB) => {
     return [childWeights, 0, 0.1];
 }
 
+const calculateRelativeFrobeniusNorm = (length, arr, alpha) => {
+	let normNeuron = 0;
+	let normRandom = 0;
+	for (let i = 0; i < length; i++) {
+		normNeuron += arr[i]**2;
+		normRandom += (randomNorm() * alpha)**2;
+	}
+	return Math.sqrt(normNeuron) / Math.sqrt(normRandom);
+}
+
 const mutateWeights = (weights, mutationRate = 0.1) => {
     const mutated = initializeWeights(weights.inputSize, weights.n1Size, weights.n2Size, weights.bias);
+	const alpha = 0.2;
     for (let i = 0; i < weights.inputSize; i++) {
         const condition = Math.random() < mutationRate;
+		const scaler = calculateRelativeFrobeniusNorm(weights.n1Size, weights.w1[i], alpha);
         for (let j = 0; j < weights.n1Size; j++) {
             mutated.w1[i][j] = weights.w1[i][j];
             if (condition) {
-                mutated.w1[i][j] += randomNorm() * 0.25;
+                mutated.w1[i][j] += randomNorm() * alpha * scaler;
             }
         }
     }
     for (let i = 0; i < weights.n1Size; i++) {
         const condition = Math.random() < mutationRate;
+		const scaler = calculateRelativeFrobeniusNorm(weights.n2Size, weights.w2[i], alpha);
         for (let j = 0; j < weights.n2Size; j++) {
             mutated.w2[i][j] = weights.w2[i][j];
             if (condition) {
-                mutated.w2[i][j] += randomNorm() * 0.25;
+                mutated.w2[i][j] += randomNorm() * alpha * scaler;
             }
         }
     }
     if (!mutated.bias) return mutated;
     const condition = Math.random() < mutationRate;
+	const scaler = calculateRelativeFrobeniusNorm(weights.n2Size, weights.bias, alpha);
     for (let i = 0; i < weights.n2Size; i++) {
         mutated.bias[i] = weights.bias[i];
         if (condition) {
-            mutated.bias[i] += randomNorm() * 0.25;;
+            mutated.bias[i] += randomNorm() * alpha * scaler;
         }
     }
     return [mutated, 0, 0.1];
@@ -152,11 +166,30 @@ const updatePopulation = (population, selectionTopPercent = 25, randomSize = 3, 
     return nextPopulation;
 }
 
+const digitMap = {
+		0: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		2: [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		4: [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+		8: [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+		16: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+		32: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+		64: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+		128: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+		256: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+		512: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+		1024: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		2048: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+};
+
+const prepareInputs = (X) => {
+	return X.map(e => digitMap[e]).reduce((r, e) => r.concat(e));
+}
 
 const forwardNN = (vars, weights) => {
-    const Xmax = (Math.log(1 + Math.max(...vars)));
-    const X = vars.map(e => Math.log(1 + e) / Xmax);
 
+    // const Xmax = (Math.log2(1 + Math.max(...vars)));
+    // const X = vars.map(e => Math.log(1 + e) / Xmax);
+    const X = prepareInputs(vars);//vars.map(e => digitMap[e]).reduce((r, e) => r.concat(e));
     // result of layer 1
     const l1 = [];
     const n0Size = X.length;
@@ -228,5 +261,5 @@ const indexOfProb = (arr) => {
 	}
 }
 
-console.log(forwardNN([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 2., 0., 0., 4., 0., 0.], initializeWeights(16, 2, 4, true)));
+console.log(forwardNN([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 2., 0., 0., 4., 0., 0.], initializeWeights(176, 2, 4, true)));
 console.log(updatePopulation(generatePopulation()));

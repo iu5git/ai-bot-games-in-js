@@ -1,11 +1,15 @@
-setInterval(async () => {
-    if (!working) return;
-    const keyCode = await getAction(getInputs());
+const pressKey = (keyCode) => {
     const keyEv = new KeyboardEvent('keyup', {
         'keyCode': keyCode,
         'which': keyCode
     });
     document.dispatchEvent(keyEv);
+};
+
+setInterval(async () => {
+    if (!working) return;
+    const keyCode = await getAction(getInputs());
+    pressKey(keyCode);
 }, 10);
 
 
@@ -20,6 +24,7 @@ const datasetSize = document.getElementsByClassName("datasetSize")[0];
 const downloadBtn = document.getElementsByClassName("download")[0];
 const deleteBtn = document.getElementsByClassName("delete")[0];
 const switchBtn = document.getElementsByClassName("autobot")[0];
+const undoBtn = document.getElementsByClassName("undoBtn")[0];
 const settingsBtn = document.getElementsByClassName("settingsBtn")[0];
 const closeSettings = document.getElementsByClassName("closeSettings")[0];
 const saveSettings = document.getElementsByClassName("saveSettings")[0];
@@ -36,7 +41,8 @@ const boolMap = {
     await (new Promise(r => {
         policyWithAction.registerListener(r);
     })).then((newRecord) => {
-        recordData.push(newRecord);
+        if (newRecord === 'undo' && recordData.length > 1) recordData.pop();
+        else recordData.push(newRecord);
         datasetSize.textContent = recordData.length - 1;
     });
     policyObserver();
@@ -79,8 +85,8 @@ populationBtn.addEventListener(
     "click",
     function() {
         var link = populationBtn.getElementsByTagName("a")[0];
-		const jsonPop = toJson(population, POPULATION_CONFIG.savingPrecision);
-		const populationObject = {generation: generation, config: POPULATION_CONFIG, population: fromJson(jsonPop)};
+        const jsonPop = toJson(population, POPULATION_CONFIG.savingPrecision);
+        const populationObject = {generation: generation, config: POPULATION_CONFIG, population: fromJson(jsonPop)};
         link.href = makeTextFile(JSON.stringify(populationObject), 'application/json');
         link.style.display = "block";
         link.click();
@@ -110,8 +116,10 @@ switchBtn.addEventListener(
     false
 );
 
+undoBtn.addEventListener('click', ()=>{pressKey(8)});
+
 const setColor = (arr, color) => {
-	arr.map(e => {e.previousElementSibling.style.color=color;});
+    arr.map(e => {e.previousElementSibling.style.color=color;});
 }
 
 const updateSettingsView = (e) => {
@@ -123,12 +131,12 @@ const updateSettingsView = (e) => {
         const typeMap = {
             'checkbox': (e) => {
                 e.checked = POPULATION_CONFIG[e.id];
-				e.oninput = function () {this.previousElementSibling.style.color = 'red';};
+                e.oninput = function () {this.previousElementSibling.style.color = 'red';};
             },
             'range': (e) => {
                 e.value = POPULATION_CONFIG[e.id];
                 e.nextElementSibling.value = e.value;
-				e.oninput = function () {this.nextElementSibling.value = this.value;this.previousElementSibling.style.color = 'red';};
+                e.oninput = function () {this.nextElementSibling.value = this.value;this.previousElementSibling.style.color = 'red';};
             }
         };
         const settings = document.getElementsByClassName('settings')[0];
@@ -138,7 +146,7 @@ const updateSettingsView = (e) => {
         for (let i = 0; i < options.length; i++) {
             typeMap[options[i].type](options[i]);
         }
-		setColor(options, 'white');
+        setColor(options, 'white');
     }
 
 settingsBtn.addEventListener(
@@ -160,7 +168,7 @@ const constructConfig = (options) => {
         mutationRate: parseFloat(options[5]),
         crossoverChance: parseFloat(options[6]),
         randomSize: parseInt(options[7]),
-		probability: parseFloat(options[8]),
+        probability: parseFloat(options[8]),
         savingPrecision: parseInt(options[9]),
     };
 };
@@ -175,14 +183,14 @@ saveSettings.addEventListener(
     "click",
     (e) => {
         const settings = document.getElementsByClassName('settings')[0];
-		const elems = Array.from(settings.getElementsByTagName('input'));
-		const options = elems.map(e => e.value);
+        const elems = Array.from(settings.getElementsByTagName('input'));
+        const options = elems.map(e => e.value);
         const config = constructConfig(options);
         saveNewConfig(config);
-		setColor(elems, '#1EFF92');
-		setTimeout(()=>{
-		setColor(elems, 'white');}
-		, 1000)
+        setColor(elems, '#1EFF92');
+        setTimeout(()=>{
+        setColor(elems, 'white');}
+        , 1000)
     },
     false
 );

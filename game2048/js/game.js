@@ -16,14 +16,21 @@ const scoreReset = {
     }
 };
 
+let clear;
+let control;
+let score = 0;
+let done = false;
+let busy = false;
+
 document.addEventListener('DOMContentLoaded', () => {
     const gridDisplay = document.getElementsByClassName('grid')[0];
     const scoreDisplay = document.getElementById('score');
     const resultDisplay = document.getElementById('result');
     const squares = [];
+    const backup = [];
     const width = 4;
-    let score = 0;
     let turn = 1;
+    let time = Date.now();
 
     const moveRight = () => {
         for (let i = 0; i < 16; i++) {
@@ -110,65 +117,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const combineRow = (how='left') => {
-		if (how==='left') {
-			for (let i = 0; i < 15; i++) {
-				if (i % 4 === 3) {
-					continue;
-				}
-				j = i+1;
-				if (squares[i].textContent === squares[j].textContent) {
-					const combinedTotal = parseInt(squares[i].textContent) * 2;
-					squares[i].textContent = combinedTotal;
-					squares[j].textContent = 0;
-					score += combinedTotal;
-					scoreDisplay.textContent = score;
-				}
-			}
-		} else { // right
-			for (let i = 15; i > 0; i--) {
-				if (i % 4 === 0) {
-					continue;
-				}
-				j = i-1;
-				if (squares[i].textContent === squares[j].textContent) {
-					const combinedTotal = parseInt(squares[i].textContent) * 2;
-					squares[i].textContent = combinedTotal;
-					squares[j].textContent = 0;
-					score += combinedTotal;
-					scoreDisplay.textContent = score;
-				}
-			}
-		}
-		checkForWin();
-    }
-
-    const combineColumn = (how='up') => {
-		if (how==='up') {		
-			for (let i = 0; i < 12; i++) {
-				if (squares[i].textContent === squares[i + width].textContent) {
-					const combinedTotal = parseInt(squares[i].textContent) * 2;
-					squares[i].textContent = combinedTotal;
-					squares[i + width].textContent = 0;
-					score += combinedTotal;
-					scoreDisplay.textContent = score;
-				}
-			}
-		} else { // down
-			for (let i = 15; i > 3; i--) {
-				const j = i - width;
-				if (squares[i].textContent === squares[j].textContent) {
-					const combinedTotal = parseInt(squares[i].textContent) * 2;
-					squares[i].textContent = combinedTotal;
-					squares[j].textContent = 0;
-					score += combinedTotal;
-					scoreDisplay.textContent = score;
-				}
-			}
-		}
+        if (how==='left') {
+            for (let i = 0; i < 15; i++) {
+                if (i % 4 === 3) {
+                    continue;
+                }
+                j = i+1;
+                if (squares[i].textContent === squares[j].textContent) {
+                    const combinedTotal = parseInt(squares[i].textContent) * 2;
+                    squares[i].textContent = combinedTotal;
+                    squares[j].textContent = 0;
+                    score += combinedTotal;
+                    scoreDisplay.textContent = score;
+                }
+            }
+        } else { // right
+            for (let i = 15; i > 0; i--) {
+                if (i % 4 === 0) {
+                    continue;
+                }
+                j = i-1;
+                if (squares[i].textContent === squares[j].textContent) {
+                    const combinedTotal = parseInt(squares[i].textContent) * 2;
+                    squares[i].textContent = combinedTotal;
+                    squares[j].textContent = 0;
+                    score += combinedTotal;
+                    scoreDisplay.textContent = score;
+                }
+            }
+        }
         checkForWin();
     }
 
-	const neighborsIndexes = {
+    const combineColumn = (how='up') => {
+        if (how==='up') {       
+            for (let i = 0; i < 12; i++) {
+                if (squares[i].textContent === squares[i + width].textContent) {
+                    const combinedTotal = parseInt(squares[i].textContent) * 2;
+                    squares[i].textContent = combinedTotal;
+                    squares[i + width].textContent = 0;
+                    score += combinedTotal;
+                    scoreDisplay.textContent = score;
+                }
+            }
+        } else { // down
+            for (let i = 15; i > 3; i--) {
+                const j = i - width;
+                if (squares[i].textContent === squares[j].textContent) {
+                    const combinedTotal = parseInt(squares[i].textContent) * 2;
+                    squares[i].textContent = combinedTotal;
+                    squares[j].textContent = 0;
+                    score += combinedTotal;
+                    scoreDisplay.textContent = score;
+                }
+            }
+        }
+        checkForWin();
+    }
+
+    const neighborsIndexes = {
         0: [1, 4],
         1: [0, 2, 5],
         2: [1, 3, 6],
@@ -187,16 +194,16 @@ document.addEventListener('DOMContentLoaded', () => {
         15: [14, 11],
     };
 
-	const checkConnectivity = () => {
-		for (let i = 0; i < squares.length; i++) {
-				for (let j=0; j < neighborsIndexes[i].length; j++) {
-					if (squares[i].textContent === squares[neighborsIndexes[i][j]].textContent) {
-						return true; // exists at least one move
-					}
-				}
-			} // else no moves exists => game over
-		return false;
-	}
+    const checkConnectivity = () => {
+        for (let i = 0; i < squares.length; i++) {
+                for (let j=0; j < neighborsIndexes[i].length; j++) {
+                    if (squares[i].textContent === squares[neighborsIndexes[i][j]].textContent) {
+                        return true; // exists at least one move
+                    }
+                }
+            } // else no moves exists => game over
+        return false;
+    }
 
     const keyRight = () => {
         moveRight();
@@ -226,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
         //generate();
     }
 
-    let busy = false;
     const keyCodeToControlMap = {
         37: keyLeft,
         38: keyUp,
@@ -235,28 +241,46 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     //assign functions to keyCodes
-    const control = (e) => {
+    control = (e) => {
         if (busy) return; //prevent bugs
+        // undo
+        if (e.keyCode === 8 && backup.length) { // backspace
+            const tmp = backup.pop();
+            policyWithAction.a = 'undo';//recordData.pop();
+            squares.map((el, i) => {el.textContent = tmp[0][i]});
+            score = tmp[1];
+            scoreDisplay.textContent = score;
+            turn = tmp[2];
+            addColours();
+        }
         if (e.keyCode < 37 || e.keyCode > 40) return; // filter keycodes;
         busy = true;
         // update policy
         const inputs = squares.map((el) => parseInt(el.textContent));
+        const scoreBefore = score;
+        const maxBefore = Math.max(...inputs);
         inputs.push(score, turn, e.keyCode);
         // apply changes
         keyCodeToControlMap[e.keyCode]();
-		// check if move affects board
-		for (let i = 0, length = squares.length; i < length; i++) {
-			if (inputs[i] !== parseInt(squares[i].textContent)) {
-				generate();
-				addColours();
-				policyWithAction.a = inputs;
-				turn++;
-				score += 2*(squares.length - squares.map(e=>parseInt(e.textContent)).filter(e=>e).length); //add number of zero cells
-				busy = false;
-				return;
-			}
-		}
-		busy = false;
+        // check if move affects board
+        for (let i = 0, length = squares.length; i < length; i++) {
+            if (inputs[i] !== parseInt(squares[i].textContent)) {
+                generate();
+                addColours();
+                policyWithAction.a = inputs;
+				backup.push([inputs, score, turn]);
+                turn++;
+                const zero_bonus = turn*(squares.length - squares.map(e=>parseInt(e.textContent)).filter(e=>e).length); //add number of zero cells
+                score += Math.floor(zero_bonus/128);
+                break;
+            }
+        }
+        busy = false;
+        const maxNew = Math.max(...inputs);
+        //const scoreMean = inputs.reduce((r, e)=>r+e, 0)/inputs.length;
+        //console.log(scoreMean);
+        const reward = (maxNew - maxBefore) / 2048 + turn / 2048 - 1;
+        return reward;
     }
     document.addEventListener('keyup', control);
 
@@ -264,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkForWin = () => {
         for (let i = 0; i < squares.length; i++) {
             if (squares[i].innerHTML == 2048) {
+                done = true;
                 resultDisplay.textContent = 'You WIN';
                 document.removeEventListener('keyup', control);
                 setTimeout(() => clear(), 3000);
@@ -279,8 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         if (zeros === 0) {
-			// check if moves exists
-			if (checkConnectivity()) return;
+            // check if moves exists
+            if (checkConnectivity()) return;
+            done = true;
             resultDisplay.textContent = 'You LOSE';
             document.removeEventListener('keyup', control);
             setTimeout(() => clear(), 1000);
@@ -288,17 +314,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //clear timer
-    const clear = () => {
+    //const clear = () => {
+    clear = () => {
         console.log('here');
-		const maxObtained = Math.max(...squares.map(e=> parseInt(e.textContent)));
-		squares.length = 0;
+        done = false;
+        const maxObtained = Math.max(...squares.map(e=> parseInt(e.textContent)));
+        squares.length = 0;
         gridDisplay.textContent = '';
-		// NEW
-		// max block + average score per games + turns
-		// squared so mean will be shifted to better games
-		scoreReset.a = (10*maxObtained**2 + Math.floor(score/turn) + turn)**2; 
+        // NEW
+        // max block + average score per games + turns
+        // squared so mean will be shifted to better games
+        scoreReset.a = (10*maxObtained**3 + Math.floor(score/turn) + turn)**0.5 - (Date.now() - time)/100; 
         score = 0;
         turn = 1;
+        backup.length = 0;
+        time = Date.now();
         scoreDisplay.textContent = score;
         createBoard();
         addColours();
@@ -333,10 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     //generate a new number
     const generate = () => {
-		const inputs = Array.from(gridDisplay.getElementsByTagName('div')).map((el) => parseInt(el.textContent));
-		const idx = inputs.map((e, i) => [e, i]).filter(e=>e[0]===0).map(e=>e[1]);
-		if (!idx.length) return;
-		const randomNumber = idx[Math.floor(Math.random() * idx.length)];
+        const inputs = Array.from(gridDisplay.getElementsByTagName('div')).map((el) => parseInt(el.textContent));
+        const idx = inputs.map((e, i) => [e, i]).filter(e=>e[0]===0).map(e=>e[1]);
+        if (!idx.length) return;
+        const randomNumber = idx[Math.floor(Math.random() * idx.length)];
         if (squares[randomNumber].innerHTML == 0) {
             squares[randomNumber].textContent = digitMap[Math.random() < 0.1];
             checkForGameOver();

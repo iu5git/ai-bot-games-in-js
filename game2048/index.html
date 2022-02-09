@@ -25,7 +25,7 @@
 		<div>
 		<h3>NN config</h3>
 		<label for='n1Size'>Hidden size:</label>
-		<input type="range" min="2" max="192" value="4" step="2" id='n1Size'>
+		<input type="range" min="2" max="1024" value="4" step="2" id='n1Size'>
 		<output></output><br/>
 		<label for='bias'>Bias:</label>
 		<input type="checkbox" checked id='bias'>
@@ -74,6 +74,9 @@
 		<div class="download">
 		  <img src="assets/download.svg" width="50px"><a download="2048_dataset.csv" href='none'></a></img>
 		</div>
+		<div class="undoBtn">
+		  <img src="assets/undo.svg" width="50px"></img>
+		</div>
 		<div class="settingsBtn">
 		  <img src="assets/settings.svg" width="50px"></img>
 		</div>
@@ -99,5 +102,6 @@
   <script src="js/baseline.js" charset="utf-8"></script>
   <script src="js/ai.js" charset="utf-8"></script>
   <script src="js/core.js" charset="utf-8"></script>
+  <script src="js/touchControls.js"></script>
   </body>
 </html>
