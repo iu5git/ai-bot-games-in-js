@@ -52,6 +52,12 @@ body {
      right: 100px;
      bottom: 180px;
 }
+ .undoBtn {
+     position: fixed;
+     cursor: pointer;
+     left: 25px;
+     top: 50px;
+}
  .settingsBtn {
      position: fixed;
      cursor: pointer;

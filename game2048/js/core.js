@@ -1,11 +1,15 @@
-setInterval(async () => {
-    if (!working) return;
-    const keyCode = await getAction(getInputs());
+const pressKey = (keyCode) => {
     const keyEv = new KeyboardEvent('keyup', {
         'keyCode': keyCode,
         'which': keyCode
     });
     document.dispatchEvent(keyEv);
+};
+
+setInterval(async () => {
+    if (!working) return;
+    const keyCode = await getAction(getInputs());
+    pressKey(keyCode);
 }, 10);
 
 
@@ -20,6 +24,7 @@ const datasetSize = document.getElementsByClassName("datasetSize")[0];
 const downloadBtn = document.getElementsByClassName("download")[0];
 const deleteBtn = document.getElementsByClassName("delete")[0];
 const switchBtn = document.getElementsByClassName("autobot")[0];
+const undoBtn = document.getElementsByClassName("undoBtn")[0];
 const settingsBtn = document.getElementsByClassName("settingsBtn")[0];
 const closeSettings = document.getElementsByClassName("closeSettings")[0];
 const saveSettings = document.getElementsByClassName("saveSettings")[0];
@@ -36,7 +41,8 @@ const boolMap = {
     await (new Promise(r => {
         policyWithAction.registerListener(r);
     })).then((newRecord) => {
-        recordData.push(newRecord);
+        if (newRecord === 'undo' && recordData.length > 1) recordData.pop();
+        else recordData.push(newRecord);
         datasetSize.textContent = recordData.length - 1;
     });
     policyObserver();
@@ -109,6 +115,8 @@ switchBtn.addEventListener(
     activate,
     false
 );
+
+undoBtn.addEventListener('click', ()=>{pressKey(8)});
 
 const setColor = (arr, color) => {
     arr.map(e => {e.previousElementSibling.style.color=color;});

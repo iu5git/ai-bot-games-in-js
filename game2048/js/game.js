@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.getElementById('score');
     const resultDisplay = document.getElementById('result');
     const squares = [];
+    const backup = [];
     const width = 4;
     let turn = 1;
     let time = Date.now();
@@ -242,6 +243,16 @@ document.addEventListener('DOMContentLoaded', () => {
     //assign functions to keyCodes
     control = (e) => {
         if (busy) return; //prevent bugs
+        // undo
+        if (e.keyCode === 8 && backup.length) { // backspace
+            const tmp = backup.pop();
+            policyWithAction.a = 'undo';//recordData.pop();
+            squares.map((el, i) => {el.textContent = tmp[0][i]});
+            score = tmp[1];
+            scoreDisplay.textContent = score;
+            turn = tmp[2];
+            addColours();
+        }
         if (e.keyCode < 37 || e.keyCode > 40) return; // filter keycodes;
         busy = true;
         // update policy
@@ -257,8 +268,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 generate();
                 addColours();
                 policyWithAction.a = inputs;
+				backup.push([inputs, score, turn]);
                 turn++;
-				const zero_bonus = turn*(squares.length - squares.map(e=>parseInt(e.textContent)).filter(e=>e).length); //add number of zero cells
+                const zero_bonus = turn*(squares.length - squares.map(e=>parseInt(e.textContent)).filter(e=>e).length); //add number of zero cells
                 score += Math.floor(zero_bonus/128);
                 break;
             }
@@ -315,6 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreReset.a = (10*maxObtained**3 + Math.floor(score/turn) + turn)**0.5 - (Date.now() - time)/100; 
         score = 0;
         turn = 1;
+        backup.length = 0;
         time = Date.now();
         scoreDisplay.textContent = score;
         createBoard();
