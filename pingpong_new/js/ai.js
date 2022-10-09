@@ -13,12 +13,13 @@ var use_bot = {
 async function waitUntil(condition, func) {
     let frame = 0;
     return await new Promise((resolve) => {
-        condition.intervalId = setInterval(() => {
+        condition.intervalId = setInterval(async () => {
             if (!condition.state) {
                 resolve("a");
             } else {
                 if (!condition.busy && !isPaused) {
-                    func();
+                    await func(false);
+                    await func(true);
                     if (frame === 0) {
                         botImages[0].style.display = "block";
                         botImages[1].style.display = "none";
@@ -81,26 +82,47 @@ const indexOfMax = (arr) => {
 
 const normalizationConstant = 705;
 // Предсказание нейронной сеткой
-const runONNX = async () => {
+const runONNX = async (left = false) => {
     use_bot.busy = true;
     console.time("onnx");
     var inp = Float32Array.from([
-        1 - ball.x / normalizationConstant,
+        left ? (1 - ball.x / normalizationConstant + 30 / normalizationConstant) : (ball.x / normalizationConstant),
         ball.y / normalizationConstant,
-        leftPaddle.y / normalizationConstant
+        left ? (leftPaddle.y / normalizationConstant) : (rightPaddle.y / normalizationConstant)
     ]);
     let input = new onnx.Tensor(inp, "float32", [1, 3]);
     let output = (await onnxSess.run([input])).get("output").data;
     const actionId = indexOfMax(output);
     if (actionId === 2) {
         // up
-        leftPaddle.dy = -leftPaddle.paddleSpeed;
+        if (left) {
+            leftPaddle.dy = -leftPaddle.paddleSpeed;
+        } else {
+            keyPresses["up"] = 1;
+            keyPresses["down"] = 0;
+            keyPresses["nothing"] = 0;
+            rightPaddle.dy = -rightPaddle.paddleSpeed;
+        }
     } else if (actionId === 1) {
         // down
-        leftPaddle.dy = leftPaddle.paddleSpeed;
+        if (left) {
+            leftPaddle.dy = leftPaddle.paddleSpeed;
+        } else {
+            keyPresses["up"] = 0;
+            keyPresses["down"] = 1;
+            keyPresses["nothing"] = 0;
+            rightPaddle.dy = rightPaddle.paddleSpeed;
+        }
     } else {
         //nothing
-        leftPaddle.dy = 0;
+        if (left) {
+            leftPaddle.dy = 0;
+        } else {
+            keyPresses["up"] = 0;
+            keyPresses["down"] = 0;
+            keyPresses["nothing"] = 1;
+            rightPaddle.dy = 0;
+        }
     }
     console.timeEnd("onnx");
     use_bot.busy = false;
