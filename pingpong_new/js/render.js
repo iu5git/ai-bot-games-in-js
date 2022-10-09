@@ -70,24 +70,32 @@ paddleImg.style.display = "none";
 ballImg.style.display = "none";
 backgroundImg.style.display = "none";
 
-// Рисуем содержимое заднего фона на холст
-context.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height, 0, 0, canvas.width, canvas.height);
+// Перепишем отрисовку как функцию для переиспользования
+const redraw = () => {
+    // Очищаем холст от предыдущего кадра
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
-// Рисуем левую ракетку на холсте
-context.drawImage(paddleImg, 0, 0, paddleImg.width, paddleImg.height, leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+    // Рисуем содержимое заднего фона на холст
+    context.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height, 0, 0, canvas.width, canvas.height);
 
-// Рисуем мячик
-context.drawImage(ballImg, 0, 0, ballImg.width, ballImg.height, ball.x, ball.y, ball.width, ball.height);
+    // Рисуем левую ракетку на холсте
+    context.drawImage(paddleImg, 0, 0, paddleImg.width, paddleImg.height, leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
 
-// Рисуем правую ракетку на холсте
-context.drawImage(paddleImg, 0, 0, paddleImg.width, paddleImg.height, rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
+    // Рисуем мячик
+    context.drawImage(ballImg, 0, 0, ballImg.width, ballImg.height, ball.x, ball.y, ball.width, ball.height);
 
-// Рисуем стены
-context.fillStyle = "lightgrey";
-context.fillRect(0, 0, canvas.width, grid);
-context.fillRect(0, canvas.height - grid, canvas.width, canvas.height);
+    // Рисуем правую ракетку на холсте
+    context.drawImage(paddleImg, 0, 0, paddleImg.width, paddleImg.height, rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
 
-// Рисуем сетку посередине
-for (let i = grid; i < canvas.height - grid; i += grid * 2) {
-    context.fillRect(canvas.width / 2 - grid / 2, i, grid / 2, grid / 2);
-}
+    // Рисуем стены
+    context.fillStyle = "lightgrey";
+    context.fillRect(0, 0, canvas.width, grid);
+    context.fillRect(0, canvas.height - grid, canvas.width, canvas.height);
+
+    // Рисуем сетку посередине
+    for (let i = grid; i < canvas.height - grid; i += grid * 2) {
+        context.fillRect(canvas.width / 2 - grid / 2, i, grid / 2, grid / 2);
+    };
+};
+
+redraw();
