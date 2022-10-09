@@ -26,3 +26,9 @@ html, body {
      left: 400px;
      top: 35px;
 }
+ .download {
+     position: fixed;
+     cursor: pointer;
+     left: 250px;
+     top: 50px;
+}
