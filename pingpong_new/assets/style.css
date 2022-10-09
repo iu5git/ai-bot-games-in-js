@@ -32,3 +32,15 @@ html, body {
      left: 250px;
      top: 50px;
 }
+ .upload {
+     color: white;
+     position: fixed;
+     right: 100px;
+     top: 35px;
+}
+ .upload input {
+     display: none;
+}
+ .upload label:hover{
+     cursor: pointer;
+}
