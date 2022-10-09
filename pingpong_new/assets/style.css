@@ -1,0 +1,46 @@
+html, body {
+     height: 100%;
+     margin: 0;
+}
+ body {
+     background: black;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+ .score {
+     color: white;
+     position: fixed;
+     left: 100px;
+     bottom: 35px;
+}
+ .logging {
+     color: white;
+     position: fixed;
+     left: 100px;
+     top: 50px;
+}
+ .datasetSize {
+     color: white;
+     position: fixed;
+     left: 400px;
+     top: 35px;
+}
+ .download {
+     position: fixed;
+     cursor: pointer;
+     left: 250px;
+     top: 50px;
+}
+ .upload {
+     color: white;
+     position: fixed;
+     right: 100px;
+     top: 35px;
+}
+ .upload input {
+     display: none;
+}
+ .upload label:hover{
+     cursor: pointer;
+}
