@@ -97,5 +97,3 @@ const redraw = () => {
         context.fillRect(canvas.width / 2 - grid / 2, i, grid / 2, grid / 2);
     };
 };
-
-redraw();
