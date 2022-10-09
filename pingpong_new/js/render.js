@@ -70,7 +70,6 @@ paddleImg.style.display = "none";
 ballImg.style.display = "none";
 backgroundImg.style.display = "none";
 
-// Перепишем отрисовку как функцию для переиспользования
 const redraw = () => {
     // Очищаем холст от предыдущего кадра
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -97,5 +96,3 @@ const redraw = () => {
         context.fillRect(canvas.width / 2 - grid / 2, i, grid / 2, grid / 2);
     };
 };
-
-redraw();

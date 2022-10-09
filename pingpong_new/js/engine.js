@@ -1,0 +1,79 @@
+// Проверка на то, пересекаются два объекта с известными координатами или нет
+// Подробнее тут: https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
+const collides = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+};
+
+// Главный цикл игры
+const loop = () => {
+    // Если платформы на предыдущем шаге куда-то двигались — пусть продолжают двигаться
+    rightPaddle.y += rightPaddle.dy;
+
+    // Если правая платформа пытается вылезти за игровое поле вниз,
+    if (rightPaddle.y < grid) {
+        // то оставляем её на месте
+        rightPaddle.y = grid;
+    }
+    // Проверяем то же самое сверху
+    else if (rightPaddle.y > RightmaxPaddleY) {
+        rightPaddle.y = RightmaxPaddleY;
+    }
+
+    // Если мяч на предыдущем шаге куда-то двигался — пусть продолжает двигаться
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+    // Если мяч касается стены снизу — меняем направление по оси У на противоположное
+    if (ball.y < grid) {
+        ball.y = grid;
+        ball.dy *= -1;
+    }
+    // Делаем то же самое, если мяч касается стены сверху
+    else if (ball.y + grid > canvas.height - grid) {
+        ball.y = canvas.height - grid * 2;
+        ball.dy *= -1;
+    }
+    // Если мяч улетел за игровое поле влево или вправо — перезапускаем его
+    if ((ball.x < 0 || ball.x > canvas.width) && !ball.resetting) {
+        // Помечаем, что мяч перезапущен, чтобы не зациклиться
+        ball.resetting = true;
+        // Даём секунду на подготовку игрокам
+        setTimeout(() => {
+            // Всё, мяч в игре
+            ball.resetting = false;
+            // Снова запускаем его из центра
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            rightPaddle.x = canvas.width - grid * 3;
+            rightPaddle.y = canvas.height / 2 - paddleHeight / 2;
+        }, 1000);
+    }
+    // Если мяч коснулся левой платформы,
+    if (collides(ball, leftPaddle)) {
+        // то отправляем его в обратном направлении
+        ball.dx *= -1;
+        // Увеличиваем координаты мяча на ширину платформы, чтобы не засчитался новый отскок
+        ball.x = leftPaddle.x + leftPaddle.width;
+    }
+    // Проверяем и делаем то же самое для правой платформы
+    else if (collides(ball, rightPaddle)) {
+        ball.dx *= -1;
+        ball.x = rightPaddle.x - ball.width;
+    }
+
+    // Отрисовываем новый кадр
+    redraw();
+
+    // Логирование
+    console.log('!');
+
+    // Рекурсивный вызов игрового движка
+    requestAnimationFrame(loop);
+};
+
+// Запускаем игру
+requestAnimationFrame(loop);
