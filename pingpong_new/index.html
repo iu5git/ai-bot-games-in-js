@@ -20,12 +20,22 @@
 		Best score: <a>0</a><br/>
 		Average: <a>0</a>
     </h1>
+	<p class='upload'>
+       <label for="file_input">
+        <img src="assets/upload1.svg" width="50px"></img>
+         <img src="assets/upload2.svg" width="50px" hidden></img>
+         ONNX file
+       </label>
+       <input type="file" id='file_input' class="modelFile" accept=".onnx"/>
+    </p>
 	<script src="js/render.js"></script>
 	<script src="js/pause.js"></script>
 	<script src="js/controls.js"></script>
 	<script src="js/logging.js"></script>
 	<script src="js/scores.js"></script>
 	<script src="js/download.js"></script>
+	<script src="js/onnx.min.js"></script>
+	<script src="js/ai.js"></script>
 	<script src="js/engine.js"></script>
   </body>
 </html>
