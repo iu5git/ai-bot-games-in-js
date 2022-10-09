@@ -50,6 +50,9 @@ const loop = () => {
             ball.y = canvas.height / 2;
             rightPaddle.x = canvas.width - grid * 3;
             rightPaddle.y = canvas.height / 2 - paddleHeight / 2;
+
+            // Обновляем доску с рекордами
+            updateStatus(true);
         }, 1000);
     }
     // Если мяч коснулся левой платформы,
@@ -63,6 +66,8 @@ const loop = () => {
     else if (collides(ball, rightPaddle)) {
         ball.dx *= -1;
         ball.x = rightPaddle.x - ball.width;
+        // Обновляем доску с рекордами
+        updateStatus(false);
     }
 
     // Отрисовываем новый кадр

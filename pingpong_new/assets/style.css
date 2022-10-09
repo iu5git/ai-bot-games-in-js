@@ -8,3 +8,9 @@ html, body {
      align-items: center;
      justify-content: center;
 }
+ .score {
+     color: white;
+     position: fixed;
+     left: 100px;
+     bottom: 35px;
+}
