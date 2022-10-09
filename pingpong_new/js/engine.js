@@ -11,6 +11,9 @@ const collides = (obj1, obj2) => {
 
 // Главный цикл игры
 const loop = () => {
+    // Сохраняем текущие значения объектов
+    updateDataset();
+
     // Если платформы на предыдущем шаге куда-то двигались — пусть продолжают двигаться
     rightPaddle.y += rightPaddle.dy;
 
@@ -51,6 +54,9 @@ const loop = () => {
             rightPaddle.x = canvas.width - grid * 3;
             rightPaddle.y = canvas.height / 2 - paddleHeight / 2;
 
+            // Вырезаем плохой фрагмент из датасета
+            recordData = recordData.slice(0, lastGoodMove);
+
             // Обновляем доску с рекордами
             updateStatus(true);
         }, 1000);
@@ -68,6 +74,8 @@ const loop = () => {
         ball.x = rightPaddle.x - ball.width;
         // Обновляем доску с рекордами
         updateStatus(false);
+        // Сохраняем временную позицию последнего удачно отбитого мячика
+        lastGoodMove = recordData.length;
     }
 
     // Отрисовываем новый кадр
