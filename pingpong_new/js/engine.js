@@ -14,6 +14,18 @@ const loop = () => {
     // Сохраняем текущие значения объектов
     updateDataset();
 
+    if (use_bot.state) {
+        leftPaddle.y += leftPaddle.dy;
+        // Если правая платформа пытается вылезти за игровое поле вниз,
+        if (leftPaddle.y < grid) {
+            // то оставляем её на месте
+            leftPaddle.y = grid;
+        }
+        // Проверяем то же самое сверху
+        else if (leftPaddle.y > LeftmaxPaddleY) {
+            leftPaddle.y = LeftmaxPaddleY;
+        }
+    }
     // Если платформы на предыдущем шаге куда-то двигались — пусть продолжают двигаться
     rightPaddle.y += rightPaddle.dy;
 

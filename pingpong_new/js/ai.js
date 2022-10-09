@@ -53,6 +53,9 @@ document.getElementsByClassName("modelFile")[0].onchange = async function(
         await onnxSess.loadModel(reader.result);
         use_bot.state = true;
         waitUntil(use_bot, runONNX);
+        leftPaddle.width = rightPaddle.width;
+        leftPaddle.height = rightPaddle.height;
+        leftPaddle.y = rightPaddle.y;
     };
     reader.readAsDataURL(file);
     console.log(fileList[0]);
@@ -82,31 +85,22 @@ const runONNX = async () => {
     use_bot.busy = true;
     console.time("onnx");
     var inp = Float32Array.from([
-        ball.x / normalizationConstant,
+        1 - ball.x / normalizationConstant,
         ball.y / normalizationConstant,
-        rightPaddle.y / normalizationConstant
+        leftPaddle.y / normalizationConstant
     ]);
     let input = new onnx.Tensor(inp, "float32", [1, 3]);
     let output = (await onnxSess.run([input])).get("output").data;
     const actionId = indexOfMax(output);
     if (actionId === 2) {
         // up
-        keyPresses["up"] = 1;
-        keyPresses["down"] = 0;
-        keyPresses["nothing"] = 0;
-        rightPaddle.dy = -rightPaddle.paddleSpeed;
+        leftPaddle.dy = -leftPaddle.paddleSpeed;
     } else if (actionId === 1) {
         // down
-        keyPresses["up"] = 0;
-        keyPresses["down"] = 1;
-        keyPresses["nothing"] = 0;
-        rightPaddle.dy = rightPaddle.paddleSpeed;
+        leftPaddle.dy = leftPaddle.paddleSpeed;
     } else {
         //nothing
-        keyPresses["up"] = 0;
-        keyPresses["down"] = 0;
-        keyPresses["nothing"] = 1;
-        rightPaddle.dy = 0;
+        leftPaddle.dy = 0;
     }
     console.timeEnd("onnx");
     use_bot.busy = false;
