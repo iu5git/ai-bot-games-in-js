@@ -97,3 +97,20 @@ const redraw = () => {
         context.fillRect(canvas.width / 2 - grid / 2, i, grid / 2, grid / 2);
     };
 };
+
+// Функция отрисовки иконки паузы
+const pauseDisplay = () => {
+    context.fillStyle = "rgba(255, 255, 255, 0.5)";
+    context.fillRect(
+        canvas.width / 2 - canvas.width / 7,
+        canvas.height / 3,
+        canvas.width / 10,
+        canvas.height / 3
+    );
+    context.fillRect(
+        canvas.width / 2 + canvas.width / 24,
+        canvas.height / 3,
+        canvas.width / 10,
+        canvas.height / 3
+    );
+};

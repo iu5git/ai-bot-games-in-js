@@ -70,10 +70,16 @@ const loop = () => {
 
     // Логирование
     console.log('!');
-
-    // Рекурсивный вызов игрового движка
-    requestAnimationFrame(loop);
 };
 
 // Запускаем игру
-requestAnimationFrame(loop);
+function Start() {
+    if (!isPaused) {
+        loop();
+    }
+    // Рекурсивный вызов игрового движка
+    requestAnimFrame(Start);
+}
+
+Start();
+loop();
