@@ -6,6 +6,7 @@
 [Пример](https://github.com/iu5git/MPPR) обучения нейронной сети и тестирования модели в формате ONNX
 
 [Мастер-класс 1](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_1.pdf)
+
 [Мастер-класс 2](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_2.pdf)
 
 [Практическое занятие 1](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Пинг_понг_1_занятие.pdf)
