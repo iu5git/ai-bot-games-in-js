@@ -9,7 +9,11 @@
 
 [Мастер-класс 2](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_2.pdf)
 
+[Мастер-класс 3](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_3.pdf)
+
 [Практическое занятие 1](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Пинг_понг_1_занятие.pdf)
+
+[Практическое занятие 2](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Методичка_2.pdf)
 
 ## Занятия
 
