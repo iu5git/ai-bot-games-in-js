@@ -1,19 +1,18 @@
 # Web игры на JS с интеллектуальными ботами
 
-### Научно-образовательная Инженерная Практика
+### Инженерная практика "Классификация изображения с помощью нейронной сети"
 [Лекция](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Supervised_learning.pdf) Введение в обучение с учителем
 
 [Пример](https://github.com/iu5git/MPPR) обучения нейронной сети и тестирования модели в формате ONNX
 
-[Мастер-класс 1](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_1.pdf)
+### Научно-образовательная Инженерная Практика "IT-каникулы"
+[Мастер-класс 1. Современные технологии и инструменты web-разработки](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_1.pdf)
 
-[Мастер-класс 2](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_2.pdf)
+[Мастер-класс 2. Алгоритмы в языке программирования JavaScript](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_2.pdf)
 
-[Мастер-класс 3](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_3.pdf)
+[Мастер-класс 3. Машинное обучение на языке Python](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_3.pdf)
 
-[Практическое занятие 1](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Пинг_понг_1_занятие.pdf)
-
-[Практическое занятие 2](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Методичка_2.pdf)
+[Практическое занятие](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Practice.pdf)
 
 ## Занятия
 
