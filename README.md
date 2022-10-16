@@ -15,7 +15,7 @@
 
 ### Практические занятия
 
-- [Репозиторий](https://gitlab.com/iu5edu/engineering-practice-autumn-2022/textbook) с актуальной версией учебного пособия
+- [Репозиторий](https://gitlab.com/iu5edu/ai-bot-games-in-js/textbook) с актуальной версией учебного пособия
 - [Учебное пособие](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Practice.pdf) в формате pdf
 
 ## План занятий
