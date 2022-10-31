@@ -6,6 +6,9 @@
 [Пример](https://github.com/iu5git/MPPR) обучения нейронной сети и тестирования модели в формате ONNX
 
 ### Научно-образовательная Инженерная Практика "IT-каникулы"
+
+[Пример игры](https://iu5git.github.io/ai-bot-games-in-js/pingpong_new/) развернутый через `GitHub Pages` 
+
 [Мастер-класс 1. Современные технологии и инструменты web-разработки](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_1.pdf)
 
 [Мастер-класс 2. Алгоритмы в языке программирования JavaScript](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_2.pdf)
