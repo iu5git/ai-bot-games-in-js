@@ -1,30 +1,30 @@
 # Web игры на JS с интеллектуальными ботами
 
-## Инженерная практика "Классификация изображения с помощью нейронной сети"
+## Научно-образовательная Инженерная Практика "IT-каникулы" 
+
+### Классификация изображения с помощью нейронной сети
 
 - [Лекция](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Supervised_learning.pdf). Введение в обучение с учителем
 - [Пример](https://github.com/iu5git/MPPR) обучения нейронной сети и тестирования модели в формате ONNX
 
-### Научно-образовательная Инженерная Практика "IT-каникулы"
+### Обучение интеллектуальных агентов решению задач на основе анализа больших данных
 
-[Пример игры](https://iu5git.github.io/ai-bot-games-in-js/pingpong_new/) развернутый через `GitHub Pages` 
+[Пример игры](https://iu5git.github.io/ai-bot-games-in-js/pingpong_new/) развернутый через `GitHub Pages`
 
-[Мастер-класс 1. Современные технологии и инструменты web-разработки](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_1.pdf)
-
-## Научно-образовательная Инженерная Практика "IT-каникулы"
-
-## Мастер-классы
+### Мастер-классы
 
 - [Мастер-класс 1](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_1.pdf). Современные технологии и инструменты web-разработки
 - [Мастер-класс 2](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_2.pdf). Алгоритмы в языке программирования JavaScript
 - [Мастер-класс 3](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Мастер_класс_3.pdf). Машинное обучение на языке Python
+
+[Jupiter Notebook](PingPongExample.ipynb) для обучения нейронной сети
 
 ### Практические занятия
 
 - [Репозиторий](https://gitlab.com/iu5edu/ai-bot-games-in-js/textbook) с актуальной версией учебного пособия
 - [Учебное пособие](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Practice.pdf) в формате pdf
 
-## План занятий
+### План занятий
 
 Занятия по 45 минут.
 
