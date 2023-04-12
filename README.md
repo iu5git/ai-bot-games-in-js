@@ -5,7 +5,11 @@
 ### Классификация изображения с помощью нейронной сети
 
 - [Лекция](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Supervised_learning.pdf). Введение в обучение с учителем
-- [Пример](https://github.com/iu5git/MPPR) обучения нейронной сети и тестирования модели в формате ONNX
+- [Мастер-класс](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/День_Открытых_дверей.pdf). День открытых дверей
+- [Ролик в YouTube](https://www.youtube.com/watch?v=8WCNt0tK2tc&t=75s) с записью мастер-класса
+
+- [Notebook](https://github.com/iu5git/MPPR/blob/main/notebooks/Lab3.ipynb) обучения нейронной сети в формате ONNX
+- [Каталог](https://github.com/iu5git/MPPR/tree/main/ONNX) для тестирования обученной модели
 
 ### Обучение интеллектуальных агентов решению задач на основе анализа больших данных
 
