@@ -3,12 +3,13 @@
 ## Научно-образовательная Инженерная Практика "IT-каникулы" 
 
 ### Классификация изображения с помощью нейронной сети
+#### Image classification using a neural network
 
-- [Лекция](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Supervised_learning.pdf). Введение в обучение с учителем
+- [Лекция](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Supervised_learning.pdf). Введение в обучение с учителем. [English](lectures/Data_Science_and_Machine_Learning)
 - [Мастер-класс](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/12_april.pdf). День открытых дверей
 - [Ролик в YouTube](https://www.youtube.com/watch?v=8WCNt0tK2tc&t=75s) с записью мастер-класса
 
-- [Notebook](https://github.com/iu5git/MPPR/blob/main/notebooks/Lab3.ipynb) обучения нейронной сети в формате ONNX
+- [Notebook](https://github.com/iu5git/MPPR/blob/main/notebooks/Lab3.ipynb) обучения нейронной сети в формате ONNX. [English Notebook](classification/English_ONNX.ipynb)
 - [Каталог](https://github.com/iu5git/MPPR/tree/main/ONNX) для тестирования обученной модели
 
 ### Обучение интеллектуальных агентов решению задач на основе анализа больших данных
