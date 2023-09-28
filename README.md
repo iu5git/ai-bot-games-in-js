@@ -5,7 +5,7 @@
 ### Классификация изображения с помощью нейронной сети
 #### Image classification using a neural network
 
-- [Лекция](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Supervised_learning.pdf). Введение в обучение с учителем. [English](lectures/Data_Science_and_Machine_Learning)
+- [Лекция](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/Supervised_learning.pdf). Введение в обучение с учителем. [English](lectures/Data_Science_and_Machine_Learning.pdf)
 - [Мастер-класс](https://github.com/iu5git/ai-bot-games-in-js/blob/main/lectures/12_april.pdf). День открытых дверей
 - [Ролик в YouTube](https://www.youtube.com/watch?v=8WCNt0tK2tc&t=75s) с записью мастер-класса
 
