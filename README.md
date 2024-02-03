@@ -2,6 +2,13 @@
 
 ## Научно-образовательная Инженерная Практика "IT-каникулы" 
 
+### Разработка WEB приложения для решения инженерных задач
+
+- Мастер-класс [Современные технологии и инструменты web-разработки](https://github.com/iu5git/JavaScript/blob/main/lectures/lec1.pdf)
+- Воркшоп [Создание макета браузерного приложения](https://github.com/iu5git/JavaScript/blob/main/tutorials/lab1). Версия [pdf](lectures/Calculator_HTML_CSS.pdf)
+- Мастер-класс [Алгоритмы в языке программирования JavaScript]
+- Воркшоп [Создание функций для вычислений на JavaScript](https://github.com/iu5git/JavaScript/blob/main/tutorials/lab2). Версия [pdf](lectures/Calculator_JavaScript.pdf)
+
 ### Классификация изображения с помощью нейронной сети
 #### Image classification using a neural network
 
